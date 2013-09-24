@@ -9,7 +9,7 @@ module SplitDatetime
       end
 
       attrs.each do |attr|
-        attr_accessible "#{attr}_date", "#{attr}_hour", "#{attr}_min"
+        attr_accessible "#{attr}_date", "#{attr}_hour", "#{attr}_min" if needs_attr_accessible?
 
         define_method(attr) do
           super() || opts[:default].call
@@ -44,5 +44,18 @@ module SplitDatetime
         end
       end
     end
+    
+    def needs_attr_accessible?
+      rails_3? && !strong_parameters_enabled?
+    end
+
+    def rails_3?
+      Rails::VERSION::MAJOR == 3
+    end
+
+    def strong_parameters_enabled?
+      defined?(ActionController::StrongParameters)
+    end
+    
   end
 end
