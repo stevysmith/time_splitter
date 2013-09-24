@@ -27,7 +27,7 @@ module SplitDatetime
           self.send("#{attr}=", self.send(attr).change(min: min))
         end
         
-        composed_of "#{attr}_time", class_name: 'DateTime'
+        composed_of "#{attr}_time".to_sym, class_name: 'DateTime'
         
         define_method("#{attr}_time=") do |time|
           return unless time.present?
