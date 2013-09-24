@@ -1,7 +1,7 @@
 module SplitDatetime
   module Accessors
     def accepts_split_datetime_for(*attrs)
-      opts = { format: "%F", default: lambda { Time.now.change(min: 0) } }
+      opts = { format: "%F" }
 
       if attrs.last.class == Hash
         custom = attrs.delete_at(-1)
@@ -10,10 +10,6 @@ module SplitDatetime
 
       attrs.each do |attr|
         attr_accessible "#{attr}_date", "#{attr}_hour", "#{attr}_min" if needs_attr_accessible?
-
-        define_method(attr) do
-          super() || opts[:default].call
-        end
 
         define_method("#{attr}_date=") do |date|
           return unless date.present?
