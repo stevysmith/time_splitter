@@ -29,7 +29,7 @@ module SplitDatetime
         
         define_method("#{attr}_time=") do |time|
           return unless time.present?
-          time = DateTime.parse time unless time.is_a?(Date) or time.is_a?(Time)
+          time = DateTime.parse(time) unless time.is_a?(Date) || time.is_a?(Time)
           self.send("#{attr}=", self.send(attr).change(hour: time.hour, min: time.min))
         end
 
