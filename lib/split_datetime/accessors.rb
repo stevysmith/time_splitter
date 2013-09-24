@@ -27,6 +27,8 @@ module SplitDatetime
           self.send("#{attr}=", self.send(attr).change(min: min))
         end
         
+        composed_of "#{attr_time}", class_name: 'DateTime'
+        
         define_method("#{attr}_time=") do |time|
           return unless time.present?
           time = DateTime.parse(time) unless time.is_a?(Date) || time.is_a?(Time)
