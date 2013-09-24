@@ -7,7 +7,7 @@ module SplitDatetime
         attr_accessible "#{attr}_date", "#{attr}_hour", "#{attr}_min", "#{attr}_time" if needs_attr_accessible?
 
         define_method("#{attr}_or_new") do
-          self.send(attr) || Time.new
+          self.send(attr) || DateTime.new
         end
 
         define_method("#{attr}_date=") do |date|
