@@ -4,9 +4,10 @@ module SplitDatetime
       opts = { format: "%F" }.merge!(attrs.extract_options!)
 
       attrs.each do |attr|
+       composed_of "#{attr}_time".to_sym, class_name: 'Time'
 
         define_method("#{attr}_or_new") do
-          self.send(attr) || DateTime.new
+          self.send(attr) || Time.new
         end
 
         define_method("#{attr}_date=") do |date|
@@ -24,12 +25,10 @@ module SplitDatetime
           return unless min.present?
           self.send("#{attr}=", self.send("#{attr}_or_new").change(min: min))
         end
-        
-        composed_of "#{attr}_time".to_sym, class_name: 'DateTime'
-        
+
         define_method("#{attr}_time=") do |time|
           return unless time.present?
-          time = DateTime.parse(time) unless time.is_a?(Date) || time.is_a?(Time)
+          time = Time.parse(time) unless time.is_a?(Date) || time.is_a?(Time)
           self.send("#{attr}=", self.send("#{attr}_or_new").change(hour: time.hour, min: time.min))
         end
 
