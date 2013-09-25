@@ -18,7 +18,7 @@ module SplitDatetime
 
         define_method("#{attr}_hour=") do |hour|
           return unless hour.present?
-          self.send("#{attr}=", self.send("#{attr}_or_new").change(hour: hour))
+          self.send("#{attr}=", self.send("#{attr}_or_new").change(hour: hour, min: self.send("#{attr}_or_new").min))
         end
 
         define_method("#{attr}_min=") do |min|
