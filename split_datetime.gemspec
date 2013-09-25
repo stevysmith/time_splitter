@@ -5,8 +5,8 @@ Gem::Specification.new do |s|
   s.name        = "split_datetime"
   s.version     = SplitDatetime::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Michi Huber"]
-  s.email       = ["michi.huber@gmail.com"]
+  s.authors     = ["Michi Huber", "Joshua Kovach"]
+  s.email       = ["michi.huber@gmail.com", "kovach.jc@"]
   s.homepage    = "http://github.com/michihuber/split_datetime"
   s.summary     = "Split datetime inputs into text and dropdowns in rails views"
   s.description = <<-END
