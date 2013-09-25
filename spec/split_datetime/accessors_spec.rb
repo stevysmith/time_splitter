@@ -77,5 +77,21 @@ describe SplitDatetime::Accessors do
         model.starts_at.should == Time.new(2222, 12, 22, 13, 44, 0)
       end
     end
+
+    describe '#starts_at_time' do
+      it 'returns the time' do
+        model.starts_at_time.should == Time.new(2222, 12, 22, 13, 44, 0)
+      end
+
+      it 'sets the hour and minute of #starts_at' do
+        model.starts_at_time = '08:33'
+        model.starts_at.should == Time.new(2222, 12, 22, 8, 33, 0)
+      end
+
+      it 'uses the default if the string is empty' do
+        model.starts_at_time = ''
+        model.starts_at.should == Time.new(2222, 12, 22, 13, 44, 0)
+      end
+    end
   end
 end
