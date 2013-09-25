@@ -15,17 +15,6 @@ describe SplitDatetime::Accessors do
       class ModelParent; def starts_at; 5; end; end
       model.starts_at.should == 5
     end
-
-    it "sets the default time to Time.now" do
-      now = Time.new(2222, 12, 22, 13, 44)
-      Time.stub(:now) { now }
-      model.starts_at.should == now.change(min: 0)
-    end
-
-    it "allows setting the default value through options" do
-      Model.accepts_split_datetime_for(:starts_at, default: lambda { 10 })
-      Model.new.starts_at.should == 10
-    end
   end
 
   describe "split datetime methods" do
