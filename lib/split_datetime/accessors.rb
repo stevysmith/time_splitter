@@ -4,7 +4,6 @@ module SplitDatetime
       opts = { format: "%F" }.merge!(attrs.extract_options!)
 
       attrs.each do |attr|
-        attr_accessible "#{attr}_date", "#{attr}_hour", "#{attr}_min", "#{attr}_time" if needs_attr_accessible?
 
         define_method("#{attr}_or_new") do
           self.send(attr) || DateTime.new
@@ -45,26 +44,11 @@ module SplitDatetime
         define_method("#{attr}_min") do
           self.send(attr).min
         end
-        
+
         define_method("#{attr}_time") do
           self.send(attr).to_time
         end
       end
     end
-    
-    private
-    
-      def needs_attr_accessible?
-        rails_3? && !strong_parameters_enabled?
-      end
-  
-      def rails_3?
-        Rails::VERSION::MAJOR == 3
-      end
-  
-      def strong_parameters_enabled?
-        defined?(ActionController::StrongParameters)
-      end
-      
   end
 end

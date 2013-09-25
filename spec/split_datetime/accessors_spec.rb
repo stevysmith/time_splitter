@@ -7,7 +7,6 @@ describe SplitDatetime::Accessors do
     class ModelParent; attr_accessor :starts_at; end
     class Model < ModelParent; attr_accessor :starts_at; end
     Model.extend(SplitDatetime::Accessors)
-    Model.should_receive(:attr_accessible).with("starts_at_date", "starts_at_hour", "starts_at_min")
     Model.accepts_split_datetime_for(:starts_at)
   end
 
@@ -24,7 +23,6 @@ describe SplitDatetime::Accessors do
     end
 
     it "allows setting the default value through options" do
-      Model.stub(:attr_accessible)
       Model.accepts_split_datetime_for(:starts_at, default: lambda { 10 })
       Model.new.starts_at.should == 10
     end
@@ -39,7 +37,6 @@ describe SplitDatetime::Accessors do
       end
 
       it "lets you modify the format" do
-        Model.stub(:attr_accessible)
         Model.accepts_split_datetime_for(:starts_at, format: "%D")
         model.starts_at_date.should == "12/22/22"
       end
