@@ -8,7 +8,7 @@ module SplitDatetime
         composed_of "#{attr}_time".to_sym, class_name: 'DateTime' if self.respond_to?(:composed_of)
 
         define_method("#{attr}_or_new") do
-          self.send(attr) || Time.now
+          self.send(attr) || Time.new(0)
         end
 
         define_method("#{attr}_date=") do |date|
