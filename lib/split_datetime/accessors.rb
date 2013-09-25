@@ -4,7 +4,8 @@ module SplitDatetime
       opts = { format: "%F" }.merge!(attrs.extract_options!)
 
       attrs.each do |attr|
-       composed_of "#{attr}_time".to_sym, class_name: 'Time'
+        # Maps the setter for #{attr}_time to accept multipart-parameters for Time
+        composed_of "#{attr}_time".to_sym, class_name: 'DateTime' if self.respond_to?(:composed_of)
 
         define_method("#{attr}_or_new") do
           self.send(attr) || Time.new
