@@ -4,11 +4,18 @@ TimeSplitter
 [![Gem Version](https://badge.fury.io/rb/time_splitter.png)](http://badge.fury.io/rb/time_splitter)
 [![Code Climate](https://codeclimate.com/github/shekibobo/time_splitter.png)](https://codeclimate.com/github/shekibobo/time_splitter)
 
-Setting DateTimes can be a difficult or ugly thing, especially through a web form. Finding a good DatePicker or TimePicker is easy, but getting them to work on both can be difficult. TimeSplitter automatically generates accessors for `date`, `time`, `hour`, and `min` on any datetime or time attribute, making it trivial to use different form inputs to set different parts of a datetime field.
+Setting DateTimes can be a difficult or ugly thing, especially through a web form. Finding a good DatePicker or TimePicker is easy, but getting them to work on both can be difficult. TimeSplitter automatically generates accessors for `date`, `time`, `hour`, and `min` on your datetime or time attributes, making it trivial to use different form inputs to set different parts of a datetime field.
 
 This gem is based on [SplitDatetime](https://github.com/michihuber/split_datetime) by [Michi Huber](https://github.com/michihuber). TimeSplitter improves on the gem, updating for Rails 4, adding `time` accessors, and providing a safer and more consistent default setting.
 
-## Example Usage
+## Install
+
+### Standalone
+
+`$ gem install time_splitter`
+
+### Gemfile
+
 In your `Gemfile`:
 
 ```ruby
@@ -37,6 +44,8 @@ In your view:
 ```
 
 Add your js datepicker and you're good to go. (Of course, this also works with standard Rails form helpers).
+
+If you are using Rails < 4.0 and/or are not using StrongParameters, you must add the `attr_accessor` for any of the split attributes you want to permit mass-assignment. TimeSplitter provides the methods that can be directly accessed, but will not automatically whitelist any of them for mass-assignment.
 
 ## Options
 
