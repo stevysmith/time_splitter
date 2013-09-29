@@ -1,13 +1,13 @@
 require 'active_support/all'
-require_relative "../../lib/split_datetime/accessors.rb"
+require_relative "../../lib/time_splitter/accessors.rb"
 
-describe SplitDatetime::Accessors do
+describe TimeSplitter::Accessors do
   let(:model) { Model.new }
   before do
     class ModelParent; attr_accessor :starts_at; end
     class Model < ModelParent; attr_accessor :starts_at; end
-    Model.extend(SplitDatetime::Accessors)
-    Model.accepts_split_datetime_for(:starts_at)
+    Model.extend(TimeSplitter::Accessors)
+    Model.split_accessor(:starts_at)
   end
 
   describe "#starts_at" do
@@ -26,7 +26,7 @@ describe SplitDatetime::Accessors do
       end
 
       it "lets you modify the format" do
-        Model.accepts_split_datetime_for(:starts_at, format: "%D")
+        Model.split_accessor(:starts_at, format: "%D")
         model.starts_at_date.should == "12/22/22"
       end
 

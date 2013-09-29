@@ -1,6 +1,6 @@
-module SplitDatetime
+module TimeSplitter
   module Accessors
-    def accepts_split_datetime_for(*attrs)
+    def split_accessor(*attrs)
       opts = { format: "%F" }.merge!(attrs.extract_options!)
 
       attrs.each do |attr|

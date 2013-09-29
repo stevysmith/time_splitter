@@ -1,3 +1,3 @@
-module SplitDatetime
+module TimeSplitter
   VERSION = "0.1.0"
 end
