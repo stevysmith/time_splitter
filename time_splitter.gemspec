@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage      = "http://github.com/shekibbo/time_splitter"
   s.description   = %q{Add split accessors for Date/Time/DateTime objects to easily set the date, time, hour, or minute.}
   s.summary       = %q{Use `datetime_accessor :starts_at` to provide `starts_at_date`, `starts_at_time`, `starts_at_hour`, `starts_at_minute` accessors on the model.}
+  s.license       = "MIT"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
