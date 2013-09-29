@@ -38,20 +38,21 @@ module TimeSplitter
           self.send("#{attr}=", self.send("#{attr}_or_new").change(hour: time.hour, min: time.min))
         end
 
+        # Readers
         define_method("#{attr}_date") do
-          self.send(attr).strftime(opts[:format])
+          self.send(attr).try :strftime, opts[:format]
         end
 
         define_method("#{attr}_hour") do
-          self.send(attr).hour
+          self.send(attr).try :hour
         end
 
         define_method("#{attr}_min") do
-          self.send(attr).min
+          self.send(attr).try :min
         end
 
         define_method("#{attr}_time") do
-          self.send(attr).to_time
+          self.send(attr).try :to_time
         end
       end
     end

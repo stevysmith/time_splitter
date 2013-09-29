@@ -11,86 +11,168 @@ describe TimeSplitter::Accessors do
   end
 
   describe "#starts_at" do
-    it "lets the superclass (usually ActiveRecord::Base) override the value" do
-      class ModelParent; def starts_at; 5; end; end
-      model.starts_at.should == 5
+    it 'does not override the default reader for the field' do
+      class Model; def starts_at; 5; end; end
+      expect(model.starts_at).to eq 5
+    end
+
+    it 'correctly returns nil if not set' do
+      expect(model.starts_at).to eq nil
     end
   end
 
   describe "split datetime methods" do
-    before { model.starts_at = Time.new(2222, 12, 22, 13, 44, 0) }
+    context 'when #starts_at is nil' do
+      describe "#starts_at_date" do
+        it "returns nil" do
+          expect(model.starts_at_date).to be_nil
+        end
 
-    describe "#starts_at_date" do
-      it "returns the model's starts_at date as string" do
-        model.starts_at_date.should == "2222-12-22"
+        it "lets you modify the format" do
+          Model.split_accessor(:starts_at, format: "%D")
+          expect(model.starts_at_date).to be_nil
+        end
+
+        it "sets the appropiate parts of #starts_at" do
+          model.starts_at_date = Time.new(1111, 1, 1)
+          expect(model.starts_at).to eq Time.new(1111, 1, 1, 0, 0, 0)
+        end
+
+        it "can set from a string" do
+          model.starts_at_date = "1111-01-01"
+          expect(model.starts_at).to eq Time.new(1111, 1, 1, 0, 0, 0)
+        end
+
+        it "is nil if the string is empty" do
+          model.starts_at_date = ""
+          expect(model.starts_at).to be_nil
+        end
       end
 
-      it "lets you modify the format" do
-        Model.split_accessor(:starts_at, format: "%D")
-        model.starts_at_date.should == "12/22/22"
+      describe "#starts_at_hour" do
+        it "returns nil" do
+          expect(model.starts_at_hour).to be_nil
+        end
+
+        it "sets the hour of starts_at" do
+          model.starts_at_hour = 11
+          expect(model.starts_at).to eq Time.new(0, 1, 1, 11, 0, 0)
+        end
+
+        it "is nil if the string is empty" do
+          model.starts_at_hour = ""
+          expect(model.starts_at).to be_nil
+        end
       end
 
-      it "sets the appropiate parts of #starts_at" do
-        model.starts_at_date = Time.new(1111, 1, 1)
-        model.starts_at.should == Time.new(1111, 1, 1, 13, 44, 0)
+      describe "#starts_at_min" do
+        it "returns nil" do
+          expect(model.starts_at_min).to be_nil
+        end
+
+        it "sets the minute of #starts_at" do
+          model.starts_at_min = 55
+          expect(model.starts_at).to eq Time.new(0, 1, 1, 0, 55, 0)
+        end
+
+        it "is nil if the string is empty" do
+          model.starts_at_min = ""
+          expect(model.starts_at).to be_nil
+        end
       end
 
-      it "can set from a string" do
-        model.starts_at_date = "1111-01-01"
-        model.starts_at.should == Time.new(1111, 1, 1, 13, 44, 0)
-      end
+      describe '#starts_at_time' do
+        it 'returns nil' do
+          expect(model.starts_at_time).to be_nil
+        end
 
-      it "uses the default if the string is empty" do
-        model.starts_at_date = ""
-        model.starts_at.should == Time.new(2222, 12, 22, 13, 44, 0)
+        it 'sets the hour and minute of #starts_at' do
+          model.starts_at_time = '08:33'
+          expect(model.starts_at).to eq Time.new(0, 1, 1, 8, 33, 0)
+        end
+
+        it 'is nil if the string is empty' do
+          model.starts_at_time = ''
+          expect(model.starts_at).to be_nil
+        end
       end
     end
 
-    describe "#starts_at_hour" do
-      it "returns the hour" do
-        model.starts_at_hour.should == 13
+    context 'when modifying #starts_at' do
+      before { model.starts_at = Time.new(2222, 12, 22, 13, 44, 0) }
+
+      describe "#starts_at_date" do
+        it "returns the model's starts_at date as string" do
+          expect(model.starts_at_date).to eq "2222-12-22"
+        end
+
+        it "lets you modify the format" do
+          Model.split_accessor(:starts_at, format: "%D")
+          expect(model.starts_at_date).to eq "12/22/22"
+        end
+
+        it "sets the appropiate parts of #starts_at" do
+          model.starts_at_date = Time.new(1111, 1, 1)
+          expect(model.starts_at).to eq Time.new(1111, 1, 1, 13, 44, 0)
+        end
+
+        it "can set from a string" do
+          model.starts_at_date = "1111-01-01"
+          expect(model.starts_at).to eq Time.new(1111, 1, 1, 13, 44, 0)
+        end
+
+        it "uses the default if the string is empty" do
+          model.starts_at_date = ""
+          expect(model.starts_at).to eq Time.new(2222, 12, 22, 13, 44, 0)
+        end
       end
 
-      it "sets the hour of starts_at" do
-        model.starts_at_hour = 11
-        model.starts_at.should == Time.new(2222, 12, 22, 11, 44, 0)
+      describe "#starts_at_hour" do
+        it "returns the hour" do
+          expect(model.starts_at_hour).to eq 13
+        end
+
+        it "sets the hour of starts_at" do
+          model.starts_at_hour = 11
+          expect(model.starts_at).to eq Time.new(2222, 12, 22, 11, 44, 0)
+        end
+
+        it "uses the default if the string is empty" do
+          model.starts_at_hour = ""
+          expect(model.starts_at).to eq Time.new(2222, 12, 22, 13, 44, 0)
+        end
       end
 
-      it "uses the default if the string is empty" do
-        model.starts_at_hour = ""
-        model.starts_at.should == Time.new(2222, 12, 22, 13, 44, 0)
-      end
-    end
+      describe "#starts_at_min" do
+        it "returns the min" do
+          expect(model.starts_at_min).to eq 44
+        end
 
-    describe "#starts_at_min" do
-      it "returns the min" do
-        model.starts_at_min.should == 44
-      end
+        it "sets the minute of #starts_at" do
+          model.starts_at_min = 55
+          expect(model.starts_at).to eq Time.new(2222, 12, 22, 13, 55, 0)
+        end
 
-      it "sets the minute of #starts_at" do
-        model.starts_at_min = 55
-        model.starts_at.should == Time.new(2222, 12, 22, 13, 55, 0)
-      end
-
-      it "uses the default if the string is empty" do
-        model.starts_at_min = ""
-        model.starts_at.should == Time.new(2222, 12, 22, 13, 44, 0)
-      end
-    end
-
-    describe '#starts_at_time' do
-      it 'returns the time' do
-        model.starts_at_time.should == Time.new(2222, 12, 22, 13, 44, 0)
+        it "uses the default if the string is empty" do
+          model.starts_at_min = ""
+          expect(model.starts_at).to eq Time.new(2222, 12, 22, 13, 44, 0)
+        end
       end
 
-      it 'sets the hour and minute of #starts_at' do
-        model.starts_at_time = '08:33'
-        model.starts_at.should == Time.new(2222, 12, 22, 8, 33, 0)
-      end
+      describe '#starts_at_time' do
+        it 'returns the time' do
+          expect(model.starts_at_time).to eq Time.new(2222, 12, 22, 13, 44, 0)
+        end
 
-      it 'uses the default if the string is empty' do
-        model.starts_at_time = ''
-        model.starts_at.should == Time.new(2222, 12, 22, 13, 44, 0)
+        it 'sets the hour and minute of #starts_at' do
+          model.starts_at_time = '08:33'
+          expect(model.starts_at).to eq Time.new(2222, 12, 22, 8, 33, 0)
+        end
+
+        it 'uses the default if the string is empty' do
+          model.starts_at_time = ''
+          expect(model.starts_at).to eq Time.new(2222, 12, 22, 13, 44, 0)
+        end
       end
     end
   end
