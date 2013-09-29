@@ -1,22 +1,26 @@
-# Split Datetime (for Rails)
+TimeSplitter
+============
+[![Build Status](https://travis-ci.org/shekibobo/time_splitter.png)](https://travis-ci.org/shekibobo/time_splitter)
 
-Have a datetime attribute? Want to have a datepicker for the date and dropdown menus for the time?
 
-This gem adds the necessary accessors to your model.
+
+Setting DateTimes can be a difficult or ugly thing, especially through a web form. Finding a good DatePicker or TimePicker is easy, but getting them to work on both can be difficult. TimeSplitter automatically generates accessors for `date`, `time`, `hour`, and `min` on any datetime or time attribute, making it trivial to use different form inputs to set different parts of a datetime field.
+
+This gem is based on [SplitDatetime](https://github.com/michihuber/split_datetime) by [Michi Huber](https://github.com/michihuber). TimeSplitter improves on the gem, updating for Rails 4, adding `time` accessors, and providing a safer and more consistent default setting.
 
 ## Example Usage
 In your `Gemfile`:
 
 ```ruby
-gem "split_datetime"
+gem "time_splitter"
 ```
 
 After bundling, assuming you have an Event model with a starts_at attribute, add this to your model:
 
 ```ruby
 class Event < ActiveRecord::Base
-  extend SplitDatetime::Accessors
-  accepts_split_datetime_for :starts_at, :ends_at
+  extend TimeSplitter::Accessors
+  split_accessor :starts_at
 end
 ```
 
@@ -32,14 +36,20 @@ In your view:
 <% end %>
 ```
 
-Add your js datepicker and you're good to go. (Of course, this also works with standard rails form helpers).
+Add your js datepicker and you're good to go. (Of course, this also works with standard Rails form helpers).
 
 ## Options
 
 You can specify the date format for the view:
 
 ```ruby
-accepts_split_datetime_for :starts_at, format: "%D"
+split_accessor :starts_at, format: "%D"
 ```
 
 See `Time#strftime` for formats. Default is `"%F"`.
+
+You can specify multiple datetime fields to split:
+
+```ruby
+split_accessor :starts_at, :ends_at, :expires_at, format: "%D"
+```
