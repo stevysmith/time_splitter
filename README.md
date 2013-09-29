@@ -1,6 +1,8 @@
 TimeSplitter
 ============
 [![Build Status](https://travis-ci.org/shekibobo/time_splitter.png)](https://travis-ci.org/shekibobo/time_splitter)
+[![Gem Version](https://badge.fury.io/rb/time_splitter.png)](http://badge.fury.io/rb/time_splitter)
+[![Code Climate](https://codeclimate.com/github/shekibobo/time_splitter.png)](https://codeclimate.com/github/shekibobo/time_splitter)
 
 Setting DateTimes can be a difficult or ugly thing, especially through a web form. Finding a good DatePicker or TimePicker is easy, but getting them to work on both can be difficult. TimeSplitter automatically generates accessors for `date`, `time`, `hour`, and `min` on any datetime or time attribute, making it trivial to use different form inputs to set different parts of a datetime field.
 
