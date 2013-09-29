@@ -2,8 +2,6 @@ TimeSplitter
 ============
 [![Build Status](https://travis-ci.org/shekibobo/time_splitter.png)](https://travis-ci.org/shekibobo/time_splitter)
 
-
-
 Setting DateTimes can be a difficult or ugly thing, especially through a web form. Finding a good DatePicker or TimePicker is easy, but getting them to work on both can be difficult. TimeSplitter automatically generates accessors for `date`, `time`, `hour`, and `min` on any datetime or time attribute, making it trivial to use different form inputs to set different parts of a datetime field.
 
 This gem is based on [SplitDatetime](https://github.com/michihuber/split_datetime) by [Michi Huber](https://github.com/michihuber). TimeSplitter improves on the gem, updating for Rails 4, adding `time` accessors, and providing a safer and more consistent default setting.
