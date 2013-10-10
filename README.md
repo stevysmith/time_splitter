@@ -62,3 +62,18 @@ You can specify multiple datetime fields to split:
 ```ruby
 split_accessor :starts_at, :ends_at, :expires_at, format: "%D"
 ```
+
+You can specify a default timey object to write. If `starts_at` is `nil`, which it would be at the time of a `new` or `create` call, TimeSplitter will use the default value as the basepoint for modification.
+
+```ruby
+split_accessor :starts_at, default: -> { DateTime.current }
+
+# model = Model.new(starts_at_time: '09:00')
+# model.starts_at
+# => Thu, 10 Oct 2013 09:00:00 -0400 
+```
+
+The default time object is `Time.new(0, 1, 1, 0, 0, 0, '+00:00')`.
+
+Note that TimeSplitter does not handle seconds at this time, and from testing it appears they are set to zero when modifying them.
+
