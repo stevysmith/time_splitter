@@ -1,7 +1,7 @@
 module TimeSplitter
   module Accessors
     def split_accessor(*attrs)
-      opts = { format: "%F" }.merge!(attrs.extract_options!)
+      options = { format: "%F" }.merge!(attrs.extract_options!)
 
       attrs.each do |attr|
         # Maps the setter for #{attr}_time to accept multipart-parameters for Time
@@ -12,7 +12,7 @@ module TimeSplitter
         # default value for +#{attr}+ to modify without explicitely overriding
         # the attr_reader. Defaults to a Time object with all fields set to 0.
         define_method("#{attr}_or_new") do
-          self.send(attr) || Time.new(0)
+          self.send(attr) || options.fetch(:default, ->{ Time.new(0, 1, 1, 0, 0, 0, "+00:00") }).call
         end
 
         # Writers
@@ -41,7 +41,7 @@ module TimeSplitter
 
         # Readers
         define_method("#{attr}_date") do
-          self.send(attr).try :strftime, opts[:format]
+          self.send(attr).try :strftime, options[:format]
         end
 
         define_method("#{attr}_hour") do
