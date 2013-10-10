@@ -29,21 +29,25 @@ describe TimeSplitter::Accessors do
         it 'sets the date on the new default' do
           model.starts_at_date = '2222-5-6'
           expect(model.starts_at).to eq DateTime.new(2222, 5, 6, 4, 5, 0, '+7')
+          expect(model.starts_at_date).to eq '2222-05-06'
         end
 
         it 'sets the hour on the new default' do
           model.starts_at_hour = 9
           expect(model.starts_at).to eq DateTime.new(1111, 2, 3, 9, 5, 0, '+7')
+          expect(model.starts_at_hour).to eq 9
         end
 
         it 'sets the minute on the new default' do
           model.starts_at_min = 20
           expect(model.starts_at).to eq DateTime.new(1111, 2, 3, 4, 20, 0, '+7')
+          expect(model.starts_at_min).to eq 20
         end
 
         it 'sets the time on the new default' do
           model.starts_at_time = '09:22'
           expect(model.starts_at).to eq DateTime.new(1111, 2, 3, 9, 22, 0, '+7')
+          expect(model.starts_at_time).to eq DateTime.new(1111, 2, 3, 9, 22, 0, '+7')
         end
       end
 

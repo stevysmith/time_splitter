@@ -53,7 +53,7 @@ module TimeSplitter
         end
 
         define_method("#{attr}_time") do
-          self.send(attr).try :to_time
+          self.send(attr)
         end
       end
     end
