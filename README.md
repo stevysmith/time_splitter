@@ -38,7 +38,7 @@ In your view:
   <%= f.input :starts_at_date, as: :string, input_html: { class: 'datepicker' } %>
   <%= f.input :starts_at_hour, collection: 0..24 %>
   <%= f.input :starts_at_min, collection: [0, 15, 30, 45] %>
-  <%= f.input :starts_at_time, as: :time_select
+  <%= f.input :starts_at_time, as: :time
   <%= ... %>
 <% end %>
 ```
@@ -49,13 +49,24 @@ If you are using Rails < 4.0 and/or are not using StrongParameters, you must add
 
 ## Options
 
-You can specify the date format for the view:
-
+By default, the read accessors provided by TimeSplitter are as follows:
 ```ruby
-split_accessor :starts_at, format: "%D"
+starts_at_date #=> Date
+starts_at_time #=> Time or Timey class used in :default option
+starts_at_hour #=> Fixnum
+starts_at_min  #=> Fixnum
 ```
 
-See `Time#strftime` for formats. Default is `"%F"`.
+You can override the default read format for date and time if you so choose, though doing so may not work well with certain form input types.
+
+```ruby
+split_accessor :starts_at, date_format: "%D", time_format: "%I:%M%p"
+
+starts_at_date #=> String "2013-10-13"
+starts_at_time #=> String "01:44PM"
+```
+
+See `Time#strftime` for formats.
 
 You can specify multiple datetime fields to split:
 
@@ -70,7 +81,7 @@ split_accessor :starts_at, default: -> { DateTime.current }
 
 # model = Model.new(starts_at_time: '09:00')
 # model.starts_at
-# => Thu, 10 Oct 2013 09:00:00 -0400 
+# => Thu, 10 Oct 2013 09:00:00 -0400 # DateTime
 ```
 
 The default time object is `Time.new(0, 1, 1, 0, 0, 0, '+00:00')`.

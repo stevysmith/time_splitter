@@ -29,7 +29,7 @@ describe TimeSplitter::Accessors do
         it 'sets the date on the new default' do
           model.starts_at_date = '2222-5-6'
           expect(model.starts_at).to eq DateTime.new(2222, 5, 6, 4, 5, 0, '+7')
-          expect(model.starts_at_date).to eq '2222-05-06'
+          expect(model.starts_at_date).to eq Date.new(2222, 5, 6)
         end
 
         it 'sets the hour on the new default' do
@@ -57,7 +57,7 @@ describe TimeSplitter::Accessors do
         end
 
         it "lets you modify the format" do
-          Model.split_accessor(:starts_at, format: "%D")
+          Model.split_accessor(:starts_at, date_format: "%D")
           expect(model.starts_at_date).to be_nil
         end
 
@@ -114,6 +114,11 @@ describe TimeSplitter::Accessors do
           expect(model.starts_at_time).to be_nil
         end
 
+        it "lets you modify the time format" do
+          Model.split_accessor(:starts_at, time_format: "%I:%M%p")
+          expect(model.starts_at_time).to be_nil
+        end
+
         it 'sets the hour and minute of #starts_at' do
           model.starts_at_time = '08:33'
           expect(model.starts_at).to eq Time.new(0, 1, 1, 8, 33, 0, '+00:00')
@@ -130,12 +135,12 @@ describe TimeSplitter::Accessors do
       before { model.starts_at = Time.new(2222, 12, 22, 13, 44, 0, '+00:00') }
 
       describe "#starts_at_date" do
-        it "returns the model's starts_at date as string" do
-          expect(model.starts_at_date).to eq "2222-12-22"
+        it "returns the model's starts_at date" do
+          expect(model.starts_at_date).to eq Date.new(2222, 12, 22)
         end
 
         it "lets you modify the format" do
-          Model.split_accessor(:starts_at, format: "%D")
+          Model.split_accessor(:starts_at, date_format: "%D")
           expect(model.starts_at_date).to eq "12/22/22"
         end
 
@@ -190,6 +195,11 @@ describe TimeSplitter::Accessors do
       describe '#starts_at_time' do
         it 'returns the time' do
           expect(model.starts_at_time).to eq Time.new(2222, 12, 22, 13, 44, 0, '+00:00')
+        end
+
+        it "lets you modify the time format" do
+          Model.split_accessor(:starts_at, time_format: "%I:%M%p")
+          expect(model.starts_at_time).to eq "01:44PM"
         end
 
         it 'sets the hour and minute of #starts_at' do

@@ -1,7 +1,7 @@
 module TimeSplitter
   module Accessors
     def split_accessor(*attrs)
-      options = { format: "%F" }.merge!(attrs.extract_options!)
+      options = attrs.extract_options!
 
       attrs.each do |attr|
         # Maps the setter for #{attr}_time to accept multipart-parameters for Time
@@ -41,7 +41,8 @@ module TimeSplitter
 
         # Readers
         define_method("#{attr}_date") do
-          self.send(attr).try :strftime, options[:format]
+          date = self.send(attr).try :to_date
+          date && options[:date_format] ? date.strftime(options[:date_format]) : date
         end
 
         define_method("#{attr}_hour") do
@@ -53,7 +54,8 @@ module TimeSplitter
         end
 
         define_method("#{attr}_time") do
-          self.send(attr)
+          time = self.send(attr)
+          time && options[:time_format] ? time.strftime(options[:time_format]) : time
         end
       end
     end
