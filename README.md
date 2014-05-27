@@ -45,7 +45,7 @@ In your view:
 
 Add your js datepicker and you're good to go. (Of course, this also works with standard Rails form helpers).
 
-If you are using Rails < 4.0 and/or are not using StrongParameters, you must add the `attr_accessor` for any of the split attributes you want to permit mass-assignment. TimeSplitter provides the methods that can be directly accessed, but will not automatically whitelist any of them for mass-assignment.
+If you are using Rails < 4.0 and/or are not using StrongParameters, you must add `attr_accessible` for any of the split attributes you want to permit mass-assignment. TimeSplitter provides the methods that can be directly accessed, but will not automatically whitelist any of them for mass-assignment.
 
 ## Options
 
