@@ -77,6 +77,12 @@ describe TimeSplitter::Accessors do
           expect(model.starts_at).to eq Time.new(1111, 12, 31, 0, 0, 0, '+00:00')
         end
 
+        it "can set from a date when format is modified" do
+          Model.split_accessor(:starts_at, date_format: "%m-%d-%Y")
+          model.starts_at_date = Time.new(1111, 12, 31, 0, 0, 0, '+00:00')
+          expect(model.starts_at).to eq Time.new(1111, 12, 31, 0, 0, 0, '+00:00')
+        end
+
         it "is nil if the string is empty" do
           model.starts_at_date = ""
           expect(model.starts_at).to be_nil

@@ -19,10 +19,12 @@ module TimeSplitter
 
         define_method("#{attr}_date=") do |date|
           return unless date.present?
-          if options[:date_format]
-            date = Date.strptime(date.to_s, options[:date_format])
-          else
-            date = Date.parse(date.to_s)
+          unless date.is_a?(Date) || date.is_a?(Time)
+            if options[:date_format]
+              date = Date.strptime(date.to_s, options[:date_format])
+            else
+              date = Date.parse(date.to_s)
+            end
           end
           self.send("#{attr}=", self.send("#{attr}_or_new").change(year: date.year, month: date.month, day: date.day))
         end
