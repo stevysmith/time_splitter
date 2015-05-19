@@ -71,6 +71,18 @@ describe TimeSplitter::Accessors do
           expect(model.starts_at).to eq Time.new(1111, 1, 1, 0, 0, 0, '+00:00')
         end
 
+        it "can set from a string when format is modified" do
+          Model.split_accessor(:starts_at, date_format: "%m-%d-%Y")
+          model.starts_at_date = "12-31-1111"
+          expect(model.starts_at).to eq Time.new(1111, 12, 31, 0, 0, 0, '+00:00')
+        end
+
+        it "can set from a date when format is modified" do
+          Model.split_accessor(:starts_at, date_format: "%m-%d-%Y")
+          model.starts_at_date = Time.new(1111, 12, 31, 0, 0, 0, '+00:00')
+          expect(model.starts_at).to eq Time.new(1111, 12, 31, 0, 0, 0, '+00:00')
+        end
+
         it "is nil if the string is empty" do
           model.starts_at_date = ""
           expect(model.starts_at).to be_nil
@@ -200,6 +212,12 @@ describe TimeSplitter::Accessors do
         it "lets you modify the time format" do
           Model.split_accessor(:starts_at, time_format: "%I:%M%p")
           expect(model.starts_at_time).to eq "01:44PM"
+        end
+
+        it "can set from a string when format is modified" do
+          Model.split_accessor(:starts_at, time_format: "%k-%M")
+          model.starts_at_time = "23-59"
+          expect(model.starts_at).to eq Time.new(2222, 12, 22, 23, 59, 0, '+00:00')
         end
 
         it 'sets the hour and minute of #starts_at' do

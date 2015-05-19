@@ -19,7 +19,13 @@ module TimeSplitter
 
         define_method("#{attr}_date=") do |date|
           return unless date.present?
-          date = Date.parse(date.to_s)
+          unless date.is_a?(Date) || date.is_a?(Time)
+            if options[:date_format]
+              date = Date.strptime(date.to_s, options[:date_format])
+            else
+              date = Date.parse(date.to_s)
+            end
+          end
           self.send("#{attr}=", self.send("#{attr}_or_new").change(year: date.year, month: date.month, day: date.day))
         end
 
@@ -35,7 +41,14 @@ module TimeSplitter
 
         define_method("#{attr}_time=") do |time|
           return unless time.present?
-          time = Time.parse(time) unless time.is_a?(Date) || time.is_a?(Time)
+
+          unless time.is_a?(Date) || time.is_a?(Time)
+            if options[:time_format]
+              time = Time.strptime(time, options[:time_format])
+            else
+              time = Time.parse(time)
+            end
+          end
           self.send("#{attr}=", self.send("#{attr}_or_new").change(hour: time.hour, min: time.min))
         end
 
