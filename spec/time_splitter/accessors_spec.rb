@@ -208,6 +208,12 @@ describe TimeSplitter::Accessors do
           expect(model.starts_at_time).to eq "01:44PM"
         end
 
+        it "can set from a string when format is modified" do
+          Model.split_accessor(:starts_at, time_format: "%k-%M")
+          model.starts_at_time = "23-59"
+          expect(model.starts_at).to eq Time.new(2222, 12, 22, 23, 59, 0, '+00:00')
+        end
+
         it 'sets the hour and minute of #starts_at' do
           model.starts_at_time = '08:33'
           expect(model.starts_at).to eq Time.new(2222, 12, 22, 8, 33, 0, '+00:00')
