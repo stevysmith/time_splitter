@@ -11,6 +11,7 @@ module TimeSplitter
         # This allows use of another property on default.
         # e.g. split_accessor :ends_at, default: -> { starts_at }
         define_method "#{attr}_default", options.fetch(:default, -> { Time.new(0, 1, 1, 0, 0, 0, "+00:00") })
+        private "#{attr}_default"
 
         # Default instance of the attribute, used if setting an element of the
         # time attribute before the attribute was sent. Allows us to retrieve a
@@ -19,6 +20,7 @@ module TimeSplitter
         define_method("#{attr}_or_new") do
           self.send(attr) || self.send("#{attr}_default")
         end
+        private "#{attr}_or_new"
 
         # Writers
 
