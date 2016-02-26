@@ -19,12 +19,12 @@ module TimeSplitter
 
         define_method("#{attr}_year=") do |year|
           return unless year.present?
-          self.send("#{attr}=", self.send("#{attr}_or_new").change(year: year)
+          self.send("#{attr}=", self.send("#{attr}_or_new").change(year: year))
         end
 
         define_method("#{attr}_month=") do |month|
           return unless month.present?
-          self.send("#{attr}=", self.send("#{attr}_or_new").change(month: month)
+          self.send("#{attr}=", self.send("#{attr}_or_new").change(month: month))
         end
 
         define_method("#{attr}_day=") do |day|
