@@ -7,13 +7,20 @@ module TimeSplitter
         # Maps the setter for #{attr}_time to accept multipart-parameters for Time
         composed_of "#{attr}_time".to_sym, class_name: 'DateTime' if self.respond_to?(:composed_of)
 
+        # Adds the default method to object scope.
+        # This allows use of another property on default.
+        # e.g. split_accessor :ends_at, default: -> { starts_at }
+        define_method "#{attr}_default", options.fetch(:default, -> { Time.new(0, 1, 1, 0, 0, 0, "+00:00") })
+        private "#{attr}_default"
+
         # Default instance of the attribute, used if setting an element of the
         # time attribute before the attribute was sent. Allows us to retrieve a
         # default value for +#{attr}+ to modify without explicitely overriding
         # the attr_reader. Defaults to a Time object with all fields set to 0.
         define_method("#{attr}_or_new") do
-          self.send(attr) || options.fetch(:default, ->{ Time.new(0, 1, 1, 0, 0, 0, "+00:00") }).call
+          self.send(attr) || self.send("#{attr}_default")
         end
+        private "#{attr}_or_new"
 
         # Writers
 

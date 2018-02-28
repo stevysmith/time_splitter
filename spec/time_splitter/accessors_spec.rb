@@ -279,5 +279,31 @@ describe TimeSplitter::Accessors do
         end
       end
     end
+
+    context 'when setting default time to another field' do
+      before do
+        class Model < ModelParent; attr_accessor :ends_at; end
+        Model.extend(TimeSplitter::Accessors)
+        Model.split_accessor(:starts_at, time_format: "%I:%M%p")
+        Model.split_accessor(:ends_at, default: -> { starts_at }, time_format: "%I:%M%p")
+      end
+
+      describe '#ends_at_date' do
+        it 'equals starts_at_date' do
+          model.starts_at    = DateTime.new(1111, 2, 3, 4, 5, 0, '+7')
+          model.ends_at_time = '06:59pm'
+          expect(model.ends_at_date).to eq model.starts_at_date
+        end
+      end
+
+      describe '#ends_at_time' do
+        it 'equals starts_at_time' do
+          model.starts_at    = DateTime.new(1111, 2, 3, 4, 5, 0, '+7')
+          model.ends_at_date = DateTime.new(2222, 2, 3).to_date
+          expect(model.ends_at_time).to eq model.starts_at_time
+        end
+      end
+    end
+
   end
 end

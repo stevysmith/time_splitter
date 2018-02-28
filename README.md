@@ -87,6 +87,17 @@ split_accessor :starts_at, default: -> { DateTime.current }
 # => Thu, 10 Oct 2013 09:00:00 -0400 # DateTime
 ```
 
+You can even depend on another field for the default value.
+
+```ruby
+split_accessor :starts_at
+split_accessor :ends_at, default: -> { starts_at }
+
+# model = Model.new(starts_at: DateTime.current)
+# model.ends_at
+# => Thu, 10 Oct 2013 11:59:00 -0400 # DateTime
+```
+
 The default time object is `Time.new(0, 1, 1, 0, 0, 0, '+00:00')`.
 
 Note that TimeSplitter does not handle seconds at this time, and from testing it appears they are set to zero when modifying them.
